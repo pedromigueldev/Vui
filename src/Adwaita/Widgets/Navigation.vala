@@ -1,6 +1,6 @@
 namespace Vui.Widget {
 
-    public class PageLink : Vui.Impl.Subclass<Gtk.Button> {
+    public class PageLink : Vui.Widget.Button {
 
         public Gtk.Widget trigger {
             set {
@@ -8,21 +8,9 @@ namespace Vui.Widget {
             }
         }
 
-        public delegate void on_click_callback ();
-
-        private unowned on_click_callback? on_click {
-            set {
-                widget.clicked.connect (() => value ());
-            }
-        }
-
         public PageLink (owned Vui.Impl.Subclass destination) {
-            widget = new Gtk.Button () {
-                focus_on_click = false,
-                can_focus = false
-            };
+            base ();
             widget.css_classes = { "nav_link" };
-            this.child = widget;
             this.destination = { destination };
 
             this.on_click = () => {

@@ -50,10 +50,12 @@ namespace Vui.Impl {
         public new bool vexpand {
             get { return gtk_widget.get_vexpand (); }
             set {
+
                 this.set_vexpand (value);
                 gtk_widget.set_vexpand (value);
             }
         }
+
         public new bool hexpand {
             get { return gtk_widget.get_hexpand (); }
             set {
@@ -61,6 +63,7 @@ namespace Vui.Impl {
                 gtk_widget.set_hexpand (value);
             }
         }
+
         public new Gtk.Align valign {
             get { return gtk_widget.valign; }
             set {
@@ -68,6 +71,7 @@ namespace Vui.Impl {
                 gtk_widget.set_valign (value);
             }
         }
+
         public new Gtk.Align halign {
             get { return gtk_widget.halign; }
             set {
@@ -80,14 +84,17 @@ namespace Vui.Impl {
             get { return gtk_widget.margin_top; }
             set { gtk_widget.margin_top = value; }
         }
+
         public new int margin_start {
             get { return gtk_widget.margin_start; }
             set { gtk_widget.margin_start = value; }
         }
+
         public new int margin_bottom {
             get { return gtk_widget.margin_bottom; }
             set { gtk_widget.margin_bottom = value; }
         }
+
         public new int margin_end {
             get { return gtk_widget.margin_end; }
             set { gtk_widget.margin_end = value; }

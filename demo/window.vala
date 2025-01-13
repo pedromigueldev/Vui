@@ -21,6 +21,7 @@
 using Vui.Widget;
 using Vui.Model;
 using Vui.Impl;
+using Vui.Flow;
 
 namespace Demo {
     public class Home : Derived {
@@ -28,27 +29,22 @@ namespace Demo {
             derived = new Navigation () {
                 pages = {
                     new ToolBar () {
-                        title = "Home",
+                        title_page = "Journal",
+                        margin_end = 20,
+                        margin_start = 20,
+                        title_append = {
+                            new Button.from_icon_name ("document-edit-symbolic") {
+                                css_classes = { "circular" }
+                            },
+                            new Button.from_icon_name ("view-more-horizontal-symbolic") {
+                                css_classes = { "circular" }
+                            }
+                        },
                         top_bar = new HeaderBar (),
                         content = new VBox () {
-                            spacing = 10,
-                            valign = Gtk.Align.FILL,
-                            vexpand = true,
-                            hexpand = true,
-                            margin_end = 20,
-                            margin_start = 20,
                             content = {
-                                new HBox () {
-                                    content = {
-                                        new Label ("Journal") {
-                                            css_classes = { "title-1", "title-bigger" },
-                                            halign = Gtk.Align.START,
-                                            valign = Gtk.Align.CENTER,
-                                        }
-                                    }
-                                },
                                 new Overlay ()
-                            },
+                            }
                         }
                     }
                 }
@@ -65,7 +61,7 @@ namespace Demo {
                     content = new VBox () {
                         spacing = 20,
                         content = {
-                            new Button () {
+                            new Button.with_label ("Dialog") {
                                 on_click = () => {
                                     new AlertDialog ("Hey it's a dialog!", "This is just a presentaion") {
                                         content = new VBox () {
@@ -81,10 +77,11 @@ namespace Demo {
                                     };
                                 }
                             },
-                            new Button (),
-                            new Button (),
-                            new Button (),
-                            new Button (),
+                            new PageLink (new FormScreen ()) {
+                                trigger = new Button.with_label ("Account Screen"),
+                                valign = Gtk.Align.CENTER,
+                                hexpand = true,
+                            },
                             new PageLink (new StateScreen ()) {
                                 trigger = new Label ("third screen"),
                                 halign = Gtk.Align.END,
@@ -124,35 +121,84 @@ namespace Demo {
     }
 
     public class StateScreen : Derived {
-        private Store<string> state = new Store<string> ("Default value");
+        private Store<string> state = new Store<string> ("There must be something here");
+        private Store<bool> state2 = new Store<bool> (true);
 
         construct {
             derived = new ToolBar () {
                 title = "Reacting to changes",
+                margin_end = 20,
+                margin_start = 20,
                 top_bar = new HeaderBar (),
                 content = new VBox () {
                     spacing = 10,
-                    valign = Gtk.Align.FILL,
                     vexpand = true,
-                    hexpand = true,
-                    margin_end = 20,
-                    margin_start = 20,
+                    valign = Gtk.Align.CENTER,
                     content = {
-                        new VBox () {
-                            valign = Gtk.Align.CENTER,
-                            vexpand = true,
+                        new ShowIf (state2) {
                             content = {
                                 new Label.ref (state) {
                                     css_classes = { "title-1" },
                                     margin_bottom = 30,
                                     wrap = true,
-                                },
+                                }
+                            }
+                        },
+                        new Section () {
+                            halign = Gtk.Align.FILL,
+                            content = {
                                 new Entry ("Type your password") {
-                                    string_buffer = (text) => state.state = text
+                                    hexpand = true,
+                                    bind_buffer = state
                                 },
                             }
+                        },
+                        new Button.with_label ("Click me!!") {
+                            css_classes = { "pill" },
+                            halign = Gtk.Align.CENTER,
+                            on_click = () => state2.state = !state2.state
                         }
                     },
+                }
+            };
+        }
+    }
+
+    public class FormScreen : Derived {
+
+        private Store<bool> toogle = new Store<bool> (false);
+
+        construct {
+            derived = new ToolBar () {
+                title_page = "Account",
+                margin_start = 20,
+                margin_end = 20,
+                top_bar = new HeaderBar (),
+                content = new VBox () {
+                    content = {
+                        new VBox () {
+                            content = {
+                                new Section ("Personal Information") {
+                                    content = {
+                                        new Entry ("First Name") {
+                                            append = new Button.from_icon_name ("document-edit-symbolic") {
+                                                on_click = () => message ("button was clicked")
+                                            }
+                                        },
+                                        new Entry ("Last Name"),
+                                    }
+                                },
+                                new Section ("Actions") {
+                                    content = {
+                                        new Toggle ("Birthday", toogle),
+                                        new Entry ("Type your password"),
+                                        new Entry ("Type your password"),
+                                        new Entry ("Type your password"),
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             };
         }

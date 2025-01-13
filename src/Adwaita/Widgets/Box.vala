@@ -7,7 +7,6 @@ protected class Vui.Widget.Box : Gtk.Box, Vui.Impl.Logistics {
     public override Vui.Impl.Subclass[] destination {
         set; get; default = null;
     }
-
     protected Vui.Impl.Subclass[] concatenate_arrays (Vui.Impl.Subclass[] array1, Vui.Impl.Subclass[] array2) {
         Vui.Impl.Subclass[] combined_array = new Vui.Impl.Subclass[array1.length + array2.length];
 
